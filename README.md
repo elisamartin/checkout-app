@@ -1,4 +1,4 @@
-![Screenshot a of purchase](./userflow.gif)
+![Screenshot a of purchase](./src/userflow.gif)
 
 ## Available Scripts
 
