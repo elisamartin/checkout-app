@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/checkout-app/static/css/main.002a2ad3.css",
+    "main.js": "/checkout-app/static/js/main.3794a6d0.js",
+    "static/media/tshirt.jpg": "/checkout-app/static/media/tshirt.27421531c47fda751a4c.jpg",
+    "index.html": "/checkout-app/index.html",
+    "main.002a2ad3.css.map": "/checkout-app/static/css/main.002a2ad3.css.map",
+    "main.3794a6d0.js.map": "/checkout-app/static/js/main.3794a6d0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.002a2ad3.css",
+    "static/js/main.3794a6d0.js"
+  ]
+}
