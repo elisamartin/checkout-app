@@ -66,7 +66,6 @@ class CheckoutPage extends React.Component {
           },
           amount: 2499,
           currency: currency,
-          processing_channel_id: apiProcessingChannelId,
           reference: "ORD-5023-4E89",
         },
         "Google Pay": {
@@ -108,6 +107,7 @@ class CheckoutPage extends React.Component {
         }
       );
       if (response.ok) {
+        console.log("response", response)
         window.location.href = "/success";
       } else {
         window.location.href = "/failure";
