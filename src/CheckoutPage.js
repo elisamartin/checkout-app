@@ -2,6 +2,8 @@ import React from "react";
 import "./index.css";
 import GooglePayButton from "@google-pay/button-react";
 import { ClipLoader } from "react-spinners";
+import { Navigate } from "react-router-dom";
+
 const apiPublicKey = process.env.REACT_APP_API_PUBLIC_KEY;
 const apiSecretKey = process.env.REACT_APP_API_SECRET_KEY;
 const apiProcessingChannelId = process.env.REACT_APP_API_PROCESSING_CHANNEL_ID;
@@ -25,6 +27,8 @@ class CheckoutPage extends React.Component {
       error: null,
       paymentMethod: "Credit Card",
       lastClickedMethod: "Credit Card",
+      redirect: false,
+      redirectURL: "",
     };
   }
 
@@ -38,6 +42,10 @@ class CheckoutPage extends React.Component {
       paymentMethod: method,
       lastClickedMethod: method,
     }));
+  };
+
+  handleRedirect = (url) => {
+    this.setState({ redirect: true, redirectURL: url });
   };
 
   handleSubmit = async (event) => {
@@ -105,13 +113,22 @@ class CheckoutPage extends React.Component {
           },
           body: JSON.stringify(requestBody),
         }
-      );
-      if (response.ok) {
-        console.log("response", response)
-        window.location.href = "/success";
-      } else {
-        window.location.href = "/failure";
-      }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("data  ", data);
+          if (data.status === "Pending" && paymentMethod === "Giropay") {
+            window.location.href = data._links.redirect.href;
+            // Confirmation of a giropay payment is only communicated through webhooks. All payments are labeled as Pending until you receive a payment_captured webhook notification (response code 10000), indicating a successful transaction.
+          } else if (
+            data.response_summary === "Approved" &&
+            paymentMethod === "Credit Card"
+          ) {
+            this.handleRedirect("/checkout/success");
+          } else {
+            this.handleRedirect("/checkout/failure");
+          }
+        });
     } catch (error) {
       this.setState({ error: error.message });
     } finally {
@@ -134,11 +151,14 @@ class CheckoutPage extends React.Component {
       error,
       paymentMethod,
       lastClickedMethod,
+      redirect,
+      redirectURL,
     } = this.state;
 
     return (
       <div className="container">
         <h2>Checkout Page</h2>
+        {redirect && <Navigate to={redirectURL} />}
         {error && <p className="error">Error: {error}</p>}
         <div className="payment-methods">
           <button

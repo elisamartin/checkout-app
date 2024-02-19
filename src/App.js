@@ -23,8 +23,8 @@ function App() {
         <Routes>
           <Route exact path="/checkout" element={<CheckoutPage />} />
           <Route path="/" element={<ProductPage />} />
-          <Route path="/success" element={<PaymentSuccess />} />
-          <Route path="/failure" element={<PaymentFailure />} />
+          <Route path="/checkout/success" element={<PaymentSuccess />} />
+          <Route path="/checkout/failure" element={<PaymentFailure />} />
         </Routes>
       </div>
     </Router>
